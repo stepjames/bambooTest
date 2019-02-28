@@ -1,0 +1,51 @@
+version: '3'
+
+services:
+  zipkin_storage_mysql:
+    image: mysql:5.7
+    #restart: always
+    # command: --default-authentication-plugin=mysql_native_password
+    ports:
+      - ${MYSQL_PORT}:3306    
+    volumes:
+      - /mysql_zipkin:/var/lib/mysql
+
+    network_mode: host
+        public:
+            aliases:
+                - zipkin_mysql  
+                
+    deploy:
+        placement:
+          constraints: [node.hostname == 127.0.0.1]
+        restart_policy:
+          condition: any
+          max_attempts: 3
+        resources:
+            limits:
+                cpus: '0.5'
+                memory: 3072M
+        update_config:
+            failure_action: rollback
+            parallelism: 1
+            delay: 30s
+            monitor: 30s
+        restart_policy:
+            condition: any
+            max_attempts: 3
+   
+    environment:
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PWD}
+      - MYSQL_DATABASE=zipkin
+      - MYSQL_USER=zipkin
+      - MYSQL_PASSWORD=${MYSQL_PWD}
+      - SPRING_PROFILES_ACTIVE=live
+      - JAVA_OPTS=-XX:+UnlockExperimentalVMOptions -XX:+UseCGroupMemoryLimitForHeap -XX:MaxMetaspaceSize=100M -Xms2048M -Xmx2048M 
+#volumes:
+#  zipkin:
+#    driver: local
+
+networks:
+  default:
+    external:
+	   name: ${NETWORK}
