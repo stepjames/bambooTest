@@ -10,8 +10,8 @@ services:
     volumes:
       - /mysql_zipkin:/var/lib/mysql
 
-    network_mode: host
-        public:
+    network_mode:
+        default:
             aliases:
                 - zipkin_mysql  
                 
@@ -48,4 +48,4 @@ services:
 networks:
   default:
     external:
-	   name: ${NETWORK}
+      name: ${NETWORK}
