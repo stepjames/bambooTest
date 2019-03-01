@@ -10,7 +10,7 @@ services:
     volumes:
       - /mysql_zipkin:/var/lib/mysql
 
-    network:
+    networks:
         default:
             aliases:
                 - zipkin_mysql  
