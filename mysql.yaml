@@ -30,16 +30,13 @@ services:
             parallelism: 1
             delay: 30s
             monitor: 30s
-        restart_policy:
-            condition: any
-            max_attempts: 3
    
     environment:
       - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PWD}
       - MYSQL_DATABASE=zipkin
       - MYSQL_USER=zipkin
       - MYSQL_PASSWORD=${MYSQL_PWD}
-      - SPRING_PROFILES_ACTIVE=live
+      - SPRING_PROFILES_ACTIVE=${SPRING_PROFILES_ACTIVE}
       - JAVA_OPTS=-XX:+UnlockExperimentalVMOptions -XX:+UseCGroupMemoryLimitForHeap -XX:MaxMetaspaceSize=100M -Xms2048M -Xmx2048M 
 #volumes:
 #  zipkin:
