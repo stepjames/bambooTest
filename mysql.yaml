@@ -24,7 +24,7 @@ services:
         resources:
             limits:
                 cpus: '0.5'
-                memory: 3072M
+                memory: 512M
         update_config:
             failure_action: rollback
             parallelism: 1
@@ -37,7 +37,7 @@ services:
       - MYSQL_USER=zipkin
       - MYSQL_PASSWORD=${MYSQL_PWD}
       - SPRING_PROFILES_ACTIVE=${SPRING_PROFILES_ACTIVE}
-      - JAVA_OPTS=-XX:+UnlockExperimentalVMOptions -XX:+UseCGroupMemoryLimitForHeap -XX:MaxMetaspaceSize=100M -Xms2048M -Xmx2048M 
+      - JAVA_OPTS=-XX:+UnlockExperimentalVMOptions -XX:+UseCGroupMemoryLimitForHeap -XX:MaxMetaspaceSize=100M -Xms256M -Xmx256M 
 #volumes:
 #  zipkin:
 #    driver: local
