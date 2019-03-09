@@ -1,0 +1,41 @@
+version: '3.3'
+
+services:
+  consul:
+    image: consul:${IMAGE_TAG}
+    volumes:
+      - /consul/${CONSUL_VOLUME_PATH}:/consul/data
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /etc/localtime:/etc/localtime:ro
+
+    ports:
+      - "${CONSUL_PORT}:8500"
+      # - target: 8500
+      #   published: "${CONSUL_PORT}"
+      #   mode: host
+
+    command: agent -ui -server -client 0.0.0.0 -bootstrap-expect=1 -retry-join consul -log-level debug -node consul
+
+    environment:
+      - SPRING_PROFILES_ACTIVE=${SPRING_PROFILES_ACTIVE}
+#      - CONSUL_BIND_INTERFACE=${CONSUL_BIND_INTERFACE}
+
+    networks:
+      default:
+        aliases:
+          - consul${NETWORK_ALIAS}
+
+    deploy:
+      replicas: 1
+      placement:
+        constraints:
+          - "node.hostname == ${TARGET_HOSTNAME}"
+      restart_policy:
+        condition: any
+        max_attempts: 3
+
+        
+networks:
+  default:
+    external:
+      name: ${NETWORK}
