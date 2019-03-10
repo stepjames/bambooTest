@@ -26,7 +26,8 @@ services:
           - consul${NETWORK_ALIAS}
 
     deploy:
-      replicas: 1
+       mode: global
+ #     replicas: 1
  #     placement:
 #        constraints:
   #        - "node.hostname == ${TARGET_HOSTNAME}"
